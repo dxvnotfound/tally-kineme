@@ -5,60 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Tally Kineme ni delbitot</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="lib/bootstrap.min.css">
+  <link href="lib/halfmoon.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
 </head>
-<style>
-  [data-page]:not([data-active]) {
-    display: none;
-  }
-</style>
-<body>
-  <div data-page="setup" data-active="">
-    <p class="text-center m-3">Tally Kineme <span class="text-secondary">ni delbitot</span></p>
-    <div class="card card-body p-3 m-3">
-      <small class="mb-1">How many papers are you tallying?</small>
-      <input type="number" placeholder="e.g. 20 papers" class="form-control" id="setup-papers">
-      <small class="mt-3 mb-1">How many questions are there?</small>
-      <input type="number" placeholder="e.g. 50 questions" class="form-control" id="setup-questions">
-      <small class="mt-3 mb-1">Which metric/legend are you using?</small>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="legends" id="legend-1" value="1" checked>
-        <label class="form-check-label" for="legend-1">
-          1 - Strongly Agree <br>
-          2 - Agree <br>
-          3 - Disagree <br>
-          4 - Strongly Disagree
-        </label>
+<body data-bs-theme="dark">
+  <div data-page="main" data-active="">
+    <p id="main-title" class="m-4 mb-0 fw-bold fs-1">Tally quickly, tally efficiently.</p>
+    <p class="mx-4 mt-2">A tallying tool handcrafted by delbitot. &lt;3</p><br>
+    <div class="card card-body m-2 p-2">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary py-2 px-3" data-navigate="setup">New Workspace</button>
       </div><br>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="legends" id="legend-2" value="2">
-        <label class="form-check-label" for="legend-2">
-          4 - Strongly Agree <br>
-          3 - Agree <br>
-          2 - Disagree <br>
-          1 - Strongly Disagree
-        </label>
-      </div><br>
-      <button class="btn btn-primary" onclick="init()">Continue</button>
+      <ul class="list-group list-group-flush" id="workspace-list"></ul>
+      <p class="text-center m-0 mt-3" id="main-empty-label">You have no workspace yet.</p><br>
     </div>
-  </div><br>
-  <div data-page="editor">
-    <p id="editor-paper" class="text-center m-1 fw-bold">Paper #1</p>
-    <p id="editor-question" class="text-center m-1">Question 1 out of 50</p>
-    <div class="d-flex justify-content-center flex-column p-3 gap-2">
-      <button class="btn btn-outline-success p-3 container-fluid" onclick="setParam(SA)">Strongly Agree</button>
-      <button class="btn btn-outline-success p-3 container-fluid" onclick="setParam(A)">Agree</button>
-      <button class="btn btn-outline-danger p-3 container-fluid" onclick="setParam(D)">Disagree</button>
-      <button class="btn btn-outline-danger p-3 container-fluid" onclick="setParam(SD)">Strongly Disagree</button>
-    </div><br>
-    <div class="m-3">
-      <button class="btn btn-outline-secondary btn-sm" onclick="resetParams()">Restart Current Paper</button>
+    <div class="card card-body m-2 p-3">
+      <p class="fw-bold mb-2">What's this?</p>
+      <p class="m-0">Workspace is where your tallying progress are tracked and stored. You can access other workspace without losing your progress.</p>
     </div>
   </div>
-  <div data-page="complete">
-    <p class="m-3"><b>Tapos na pagtatally te</b><br>Your .csv file will be downloaded. After the download, please go ahead to <a href="https://www.freeconvert.com/csv-to-xls">freeconvert.com/csv-to-xls</a> to convert your .csv file into an excel (.xls) file.</p>
+  <div data-page="setup">
+    <p class="m-4 mb-3 fs-4 fw-bold text-white">Let's get you started.</p>
+    <p class="mx-4">Personalize your workspace and let's get to tallying efficiently and quickly.</p>
+    <div class="card card-body m-2">
+      <p class="mb-2">Name of the workspace <span class="text-secondary">(optional)</span></p>
+      <input type="text" placeholder="e.g. Tally Workspace for Parnisan" class="form-control border-light p-2 px-3 mb-4" id="setup-label">
+      <p class="mb-2">How many papers are you tallying?</p>
+      <input type="number" placeholder="e.g. 20 papers" class="form-control border-light p-2 px-3 mb-4" id="setup-papers">
+      <p class="mb-2">How many questions are there?</p>
+      <input type="number" placeholder="e.g. 50 questions" class="form-control border-light p-2 px-3" id="setup-questions">
+    </div>
+    <div class="card card-body m-2">
+      <p class="mb-2 fw-bold">Legend</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="m-0">Strongly Agree</p>
+        <input type="number" placeholder="1" value="1" class="form-control border-light p-2 px-3 w-25" id="setup-legend-sa">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <p class="m-0">Agree</p>
+        <input type="number" placeholder="2" value="2" class="form-control border-light p-2 px-3 w-25" id="setup-legend-a">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <p class="m-0">Disagree</p>
+        <input type="number" placeholder="3" value="3" class="form-control border-light p-2 px-3 w-25" id="setup-legend-d">
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <p class="m-0">Strongly Disagree</p>
+        <input type="number" placeholder="4" value="4" class="form-control border-light p-2 px-3 w-25" id="setup-legend-sd">
+      </div>
+    </div>
+    <div class="d-flex justify-content-between p-3">
+      <button class="btn btn-outline-secondary p-2 px-3" data-navigate="main">Cancel</button>
+      <button class="btn btn-primary p-2 px-3" onclick="createWorkspace()">Create Workspace</button>
+    </div><br>
+  </div>
+  <div data-page="workspace">
+    <div class="d-flex flex-column p-3 gap-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <p class="fs-5 fw-bold m-0" id="workspace-label"></p>
+        <button class="btn btn-outline-secondary fs-2 px-4" data-bs-toggle="collapse" data-bs-target="#workspace-collapse">&equiv;</button>
+      </div>
+      <div class="collapse rounded bg-dark border-dark" id="workspace-collapse">
+        <ul class="list-group list-group-flush">
+          <li class="p-2 px-3 list-group-item" onclick="undo()">Undo</li>
+          <li class="p-2 px-3 list-group-item" onclick="forceExport()">Force Export</li>
+          <li class="p-2 px-3 list-group-item" onclick="restartParam()">Restart Current Paper</li>
+          <li class="p-2 px-3 list-group-item" onclick="restartAll()">Restart All Paper</li>
+          <li class="p-2 px-3 list-group-item" data-navigate="main">Close Workspace</li>
+        </ul>
+      </div>
+      <div class="card card-body"><div class="d-flex align-items-center justify-content-between">
+        <div>
+          <p class="fw-bold m-0 mb-2" id="workspace-paper"></p>
+          <p id="workspace-questions" class="m-0"></p>
+        </div>
+        <button class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#workspace-preview">View Tallies</button>
+      </div></div>
+      <div class="collapse rounded bg-dark border-dark" id="workspace-preview">
+        <textarea id="workspace-preview-data" readonly="" rows="15" class="border-0 p-2 w-100 bg-transparent"></textarea>
+      </div>
+      <button class="btn btn-outline-success py-3" onclick="pushParam(SA)">Strongly Agree</button>
+      <button class="btn btn-outline-success py-3" onclick="pushParam(A)">Agree</button>
+      <button class="btn btn-outline-danger py-3" onclick="pushParam(D)">Disagree</button>
+      <button class="btn btn-outline-danger py-3" onclick="pushParam(SD)">Strongly Disagree</button>
+    </div><br>
+    <div class="card card-body m-2 p-3">
+      <p class="fw-bold mb-2">Autosave is enabled</p>
+      <p class="m-0">Every action you made will automatically be saved. Your progress will be restored once you come back.</p>
+    </div>
+  </div>
+  <div data-page="export">
+    <p class="m-4 mb-3 fs-4 fw-bold text-white">Tally completed</p>
+    <p class="mx-4">Your <code>.csv</code> will be downloaded. If your download hasn't been started, please <a href="" id="export-download">click here</a>.</p>
+    <div class="card card-body m-3">
+      <table class="table table-striped fs-6">
+        <thead>
+          <tr>
+            <th>Respondents</th>
+            <th>Total</th>
+            <th>Average</th>
+          </tr>
+        </thead>
+        <tbody id="export-output"></tbody>
+      </table>
+      <p class="text-secondary">Total and average data are included on the exported file.</p>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-outline-secondary p-2 px-3" data-navigate="main">Back to Home</button>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed bottom-0 left-0 w-100 p-3" id="toast-outer">
+    <div class="container-fluid bg-dark shadow-sm text-white p-3 rounded" id="toast-container"></div>
   </div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="index.js"></script>
+<script src="lib/jquery.min.js"></script>
+<script src="lib/bootstrap.bundle.min.js"></script>
+<script src="lib/indexed.js"></script>
+<script src="index.js" defer=""></script>
 </html>

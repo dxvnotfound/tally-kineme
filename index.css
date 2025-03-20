@@ -1,0 +1,26 @@
+* {
+  font-family: "Inter" !important;
+}
+
+#main-title {
+  background-image: linear-gradient(to top left, #00B4FF, #00FFDA);
+  background-clip: text;
+  color: transparent;
+}
+
+[data-page]:not([data-active]) {
+  display: none;
+}
+
+#toast-outer {
+  pointer-events: none;
+}
+
+#toast-container {
+  display: none;
+}
+
+#workspace-preview-data {
+  outline: none;
+  resize: none;
+}

@@ -241,7 +241,7 @@ $(document).ready(async () => {
       goto($(evt.target).attr("data-navigate"));
     });
   });
-  fetch("workspace-labels.json").then(async x => {
+  fetch("lib/workspace-labels.json").then(async x => {
     WORKSPACE_LABELS = await x.json();
   });
 });
